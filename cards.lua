@@ -5,7 +5,17 @@ local cards_mt = {}
 cards_mt.__index = cards_mt
 
 function cards_mt.__tostring(c)
-	return c.value.." of "..c.suit
+	if c:isAce() then
+		return "ace of "..c.suit
+	elseif c:isJack() then
+		return "jack of "..c.suit
+	elseif c:isQueen() then
+		return "queen of "..c.suit
+	elseif c:isKing() then
+		return "king of "..c.suit
+	else
+		return c.value.." of "..c.suit
+	end
 end
 
 function cards_mt.isAce(c)
