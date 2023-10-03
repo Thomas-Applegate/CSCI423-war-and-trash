@@ -67,7 +67,7 @@ local function fillSuit(name)
 	end
 end
 
-fillSuit("hearts"
+fillSuit("hearts")
 fillSuit("diamonds")
 fillSuit("spades")
 fillSuit("clubs")
