@@ -67,7 +67,7 @@ function cards_mt.isBlack(c)
 end
 
 function cards_mt.warValue(c)
-	if c:value == 1 then
+	if c.value == 1 then
 		return 14
 	else
 		return c.value
