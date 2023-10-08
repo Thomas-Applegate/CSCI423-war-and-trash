@@ -2,6 +2,8 @@ f_debug = true
 
 local random = require "random"
 require "cards"
+local war   = require "war"
+local trash = require "trash"
 
 --main chunk
 if not f_debug then --verify arguments
