@@ -11,7 +11,7 @@ if not f_debug then --verify arguments
 		error("invalid number of arguments", 0)
 	end
 else
-	print "\27[1m\27[5m\27[31mWARNING: debug flag is set. disable before submission!\27[0m"
+	print "\27[1m\27[31mWARNING: debug flag is set. disable before submission!\27[0m"
 end
 
 local gameStr = arg[1]

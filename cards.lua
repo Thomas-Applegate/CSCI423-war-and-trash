@@ -100,10 +100,12 @@ end
 
 --lua arrays start at one, so I have to start c at one and finish at n
 function shuffle(tab)
-	for c=1,#tab-1 do
+	local c = 1
+	while c < #tab do
 		local p = random.equilikely(c, #tab)
 		local temp = tab[c]
 		tab[c] = tab[p]
 		tab[p] = temp
+		c = c + 1
 	end
 end

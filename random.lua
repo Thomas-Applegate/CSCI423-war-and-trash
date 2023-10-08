@@ -34,7 +34,7 @@ function random.usefile(name)
 end
 
 function random.useprng()
-	random_mt.__call  = defaultprng
+	random_mt.__call = defaultprng
 end
 
 function random.uniform(a, b)
