@@ -1,5 +1,7 @@
 local random = require "random"
 
+local cards = {}
+
 local cards_mt = {}
 
 cards_mt.__index = cards_mt
@@ -74,22 +76,6 @@ function cards_mt.warValue(c)
 	end
 end
 
-local cards = {}
-
---TODO build master deck
-local function fillSuit(name)
-	for i=1,13 do
-		local c = {suit=name, value=i}
-		setmetatable(c, cards_mt)
-		cards[#cards+1] = c
-	end
-end
-
-fillSuit("hearts")
-fillSuit("diamonds")
-fillSuit("spades")
-fillSuit("clubs")
-
 function newDeck() --shallow copy master deck
 	local deck = {}
 	for i, v in ipairs(cards) do
@@ -109,3 +95,18 @@ function shuffle(tab)
 		c = c + 1
 	end
 end
+
+--build the master deck
+
+local function fillSuit(name)
+	for i=1,13 do
+		local c = {suit=name, value=i}
+		setmetatable(c, cards_mt)
+		cards[#cards+1] = c
+	end
+end
+
+fillSuit("hearts")
+fillSuit("diamonds")
+fillSuit("spades")
+fillSuit("clubs")
