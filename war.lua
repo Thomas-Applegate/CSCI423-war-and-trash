@@ -138,7 +138,7 @@ function war.play()
 		--finally check and handle transition
 		if checkForTransition() then
 			T = T + 1
-			L = T
+			L = N
 		end
 		
 	until gameWon()
