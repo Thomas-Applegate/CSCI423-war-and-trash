@@ -28,3 +28,7 @@ end
 if gameStr == "war" then
 	war.play()
 end
+
+if gameStr == "trash" then
+	trash.play()
+end
