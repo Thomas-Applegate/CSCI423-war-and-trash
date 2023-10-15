@@ -1,4 +1,5 @@
 require "cards"
+local random = require "random"
 
 local war = {}
 
