@@ -152,9 +152,9 @@ local function playTurn(currentPlayer)
 			local tempPile = {}
 			for i=1,#currentArray do
 				if f_debug then --make sure array is valid
-					if currentArray[i].value ~= i then
+					if not (currentArray[i].value == i or currentArray[i]:isJack()) then
 						error("Player array card value mismatch, expected "
-							..i.." got "..currentArray[i].value)
+							..i.." or jack got "..currentArray[i].value)
 					end
 				end
 				tempPile[#tempPile+1] = currentArray[i]
