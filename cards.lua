@@ -86,6 +86,14 @@ end
 
 --lua arrays start at one, so I have to start c at one and finish at n
 function shuffle(tab)
+	if type(tab) ~= "table" then
+		error("tab must be a table", 1)
+	end
+	
+	if #tab < 2 then
+		error("size of tab must be at least 2", 1)
+	end
+	
 	local c = 1
 	while c < #tab do
 		local p = random.equilikely(c, #tab)

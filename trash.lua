@@ -123,8 +123,6 @@ local function playTurn(currentPlayer)
 			currentFaceUp[loc] = true
 			cardInHand = temp
 		elseif cardInHand.value > #currentArray or currentFaceUp[cardInHand.value] then
-			discardPile[#discardPile+1] = cardInHand
-			cardInHand = nil
 			keepPlaying = false
 		else
 			local value = cardInHand.value
@@ -145,6 +143,13 @@ local function playTurn(currentPlayer)
 		
 		if clear then --shuffle array, discard, and draw piles. Deal next array
 			local newSize = #currentArray - 1
+			if newSize == 0 then --player has won the game
+				for k, _ in pairs(currentArray) do
+					currentArray[k] = nil
+				end
+				return
+			end
+			keepPlaying = true
 			for k, _ in pairs(currentFaceUp) do --clear face up array
 				currentFaceUp[k] = nil
 			end
@@ -177,6 +182,8 @@ local function playTurn(currentPlayer)
 			drawPile = tempPile
 		end
 	end
+	discardPile[#discardPile+1] = cardInHand
+	cardInHand = nil
 end
 
 function trash.play()
