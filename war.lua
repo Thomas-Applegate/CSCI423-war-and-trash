@@ -76,6 +76,14 @@ function war.play()
 		local roundCards = {}
 		
 		repeat
+			if f_debug then --some debug assertions
+				if #playerAHand == 0 then
+					error("Size of playerAHand is 0 at turn start: N="..N.." T="..T.." L="..L)
+				end
+				if #playerBHand == 0 then
+					error("Size of playerBHand is 0 at turn start: N="..N.." T="..T.." L="..L)
+				end
+			end
 			--draw cards and compare their values
 			local playerACard = playerAHand[#playerAHand]
 			playerAHand[#playerAHand] = nil
