@@ -22,14 +22,6 @@ local function setup()
 end
 
 local function gameWon()
-	if f_debug then
-		local total = #playerAHand + #playerAWinnings
-		total = total + #playerBHand + #playerBWinnings
-		if total ~= 52 then
-			error("total card count is not 52, something went wrong")
-		end
-	end
-
 	if #playerAHand + #playerAWinnings == 52 then
 		return true
 	end
@@ -83,13 +75,15 @@ function war.play()
 					error("Size of playerAHand is 0 at turn start: N="..N.." T="..T.." L="..L
 						.."\nSize of playerAWinnings is "..#playerAWinnings
 						.." Size of playerBHand is "..#playerBHand
-						.." Size of playerBWinnings is "..#playerBWinnings)
+						.." Size of playerBWinnings is "..#playerBWinnings
+						.." Size of roundCards is "..#roundCards)
 				end
 				if #playerBHand == 0 then
 					error("Size of playerBHand is 0 at turn start: N="..N.." T="..T.." L="..L
 						.."\nSize of playerBWinnings is "..#playerBWinnings
 						.." Size of playerAHand is "..#playerAHand
-						.." Size of playerAWinnings is "..#playerAWinnings)
+						.." Size of playerAWinnings is "..#playerAWinnings
+						.." Size of roundCards is "..#roundCards)
 				end
 			end
 			--draw cards and compare their values
@@ -139,17 +133,31 @@ function war.play()
 				roundComplete = true
 			else --check for and shuffle empty hands
 				if #playerAHand == 0 then
-					shuffle(playerAWinnings)
-					local temp = playerAHand
-					playerAHand = playerAWinnings
-					playerAWinnings = temp
+					if #playerAWinnings == 0 then
+						for _, v in ipairs(roundCards) do
+							playerBWinnings[#playerBWinnings+1] = v
+						end
+						roundComplete = true
+					else
+						shuffle(playerAWinnings)
+						local temp = playerAHand
+						playerAHand = playerAWinnings
+						playerAWinnings = temp
+					end
 				end
 				
 				if #playerBHand == 0 then
-					shuffle(playerBWinnings)
-					local temp = playerBHand
-					playerBHand = playerBWinnings
-					playerBWinnings = temp
+					if #playerBWinnings == 0 then
+						for _, v in ipairs(roundCards) do
+							playerAWinnings[#playerAWinnings+1] = v
+						end
+						roundComplete = true
+					else
+						shuffle(playerBWinnings)
+						local temp = playerBHand
+						playerBHand = playerBWinnings
+						playerBWinnings = temp
+					end
 				end
 			end
 		until roundComplete
@@ -158,6 +166,14 @@ function war.play()
 		if checkForTransition() then
 			T = T + 1
 			L = N
+		end
+		
+		if f_debug then
+			local total = #playerAHand + #playerAWinnings
+			total = total + #playerBHand + #playerBWinnings
+			if total ~= 52 then
+				error("total card count is not 52, something went wrong")
+			end
 		end
 		
 	until gameWon()
