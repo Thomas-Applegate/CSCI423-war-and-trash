@@ -54,8 +54,20 @@ local function gameWon()
 	end
 end
 
-local function playTurn(arr, faceUp)
-
+local function playTurn(currentPlayer)
+	local currentArray, currentFaceUp, othArray, othFaceUp = nil
+	
+	if currentPlayer == "A" then
+		currentArray = playerAArray
+		currentFaceUp = playerAFaceUp
+		othArray = playerBArray
+		othFaceUp = playerBFaceUp
+	else
+		currentArray = playerBArray
+		currentFaceUp = playerBFaceUp
+		othArray = playerAArray
+		othFaceUp = playerAFaceUp
+	end
 end
 
 function trash.play()
@@ -64,8 +76,7 @@ function trash.play()
 	local T = 0
 	local L = 0
 	
-	local currentArr = playerAArray
-	local currentFaceUp = playerAFaceUp
+	local currentPlayer = "A"
 	repeat
 		N = N + 1
 		
@@ -77,19 +88,18 @@ function trash.play()
 			discardPile = { temp }
 		end
 		
-		playTurn(currentArr, currentFaceUp)
+		playTurn(currentPlayer)
 		
 		if checkForTransition() then
 			T = T + 1
 			L = N
 		end
 		
-		if currentArr == playerAArray then --swap the current player
-			currentArr = playerBArray
-			currentFaceUp = playerBFaceUp
+		--swap current player
+		if currentPlayer == "A" then
+			currentPlayer = "B"
 		else
-			currentArr = playerAArray
-			currentFaceUp = playerBFaceUp
+			currentPlayer = "A"
 		end
 	until gameWon()
 	
