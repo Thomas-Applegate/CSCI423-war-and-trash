@@ -32,11 +32,11 @@ local function gameWon()
 
 	if #playerAHand + #playerAWinnings == 52 then
 		return true
-	elseif #playerBHand + #playerBWinnings == 52 then
-		return true
-	else
-		return false
 	end
+	if #playerBHand + #playerBWinnings == 52 then
+		return true
+	end
+	return false
 end
 
 local function checkForTransition()
@@ -80,10 +80,16 @@ function war.play()
 		repeat
 			if f_debug then --some debug assertions
 				if #playerAHand == 0 then
-					error("Size of playerAHand is 0 at turn start: N="..N.." T="..T.." L="..L)
+					error("Size of playerAHand is 0 at turn start: N="..N.." T="..T.." L="..L
+						.."\nSize of playerAWinnings is "..#playerAWinnings
+						.." Size of playerBHand is "..#playerBHand
+						.." Size of playerBWinnings is "..#playerBWinnings)
 				end
 				if #playerBHand == 0 then
-					error("Size of playerBHand is 0 at turn start: N="..N.." T="..T.." L="..L)
+					error("Size of playerBHand is 0 at turn start: N="..N.." T="..T.." L="..L
+						.."\nSize of playerBWinnings is "..#playerBWinnings
+						.." Size of playerAHand is "..#playerAHand
+						.." Size of playerAWinnings is "..#playerAWinnings)
 				end
 			end
 			--draw cards and compare their values
@@ -101,7 +107,7 @@ function war.play()
 				for _, v in ipairs(roundCards) do
 					playerAWinnings[#playerAWinnings+1] = v
 				end
-				roundCards = nil
+				roundCards = {}
 				roundComplete = true
 			elseif BValue > AValue then --player B wins round
 				playerBWinnings[#playerBWinnings+1]=playerACard
@@ -109,7 +115,7 @@ function war.play()
 				for _, v in ipairs(roundCards) do
 					playerBWinnings[#playerBWinnings+1] = v
 				end
-				roundCards = nil
+				roundCards = {}
 				roundComplete = true
 			else --tie
 				roundCards[#roundCards+1] = playerACard
