@@ -1,4 +1,4 @@
-f_debug = false
+f_debug = true
 
 local random = require "random"
 require "cards"
