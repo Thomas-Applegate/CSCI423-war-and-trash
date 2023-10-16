@@ -133,6 +133,48 @@ local function playTurn(currentPlayer)
 			currentFaceUp[value] = true
 			cardInHand = temp
 		end
+		
+		--check if the player's array has been cleared
+		local clear = true
+		for i=1,#currentArray do
+			if f_debug then
+				if currentArray[i].value ~= i then
+					error("Player array card value mismatch, something went wrong")
+				end
+			end
+			if currentFaceUp[i] == false then
+				clear = false
+				break
+			end
+		end
+		
+		if clear then --shuffle array, discard, and draw piles. Deal next array
+			local newSize = #currentArray - 1
+			for k, _ in pairs(currentFaceUp) do --clear face up array
+				currentFaceUp[k] = nil
+			end
+			--move cards into temp pile and then shuffle
+			local tempPile = {}
+			for i=1,#currentArray do
+				tempPile[#tempPile+1] = currentArray[i]
+				currentArray[i] = nil
+			end
+			for i=1,#discardPile do
+				tempPile[#tempPile+1] = discardPile[i]
+				discardPile[i] = nil
+			end
+			for i=1,#drawPile do
+				tempPile[#tempPile+1] = drawPile[i]
+				drawPile[i] = nil
+			end
+			shuffle(tempPile)
+			for i=1,newSize do
+				currentArray[i] = tempPile[#tempPile]
+				tempPile[#tempPile] = nil
+				currentFaceUp[i] = false
+			end
+			drawPile = tempPile
+		end
 	end
 end
 
