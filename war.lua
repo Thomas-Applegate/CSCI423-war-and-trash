@@ -58,11 +58,13 @@ local function checkForTransition()
 	end
 end
 
+--[[
 local function unlikelyEvent()
 	local test = #playerAHand == 0 and #playerBHand == 0
 	test = test and #playerAWinnings == 0 and #playerBWinnings == 0
 	return test
 end
+]]--
 
 function war.play()
 	setup()
@@ -115,7 +117,7 @@ function war.play()
 			end
 			
 			--check if hands are empty
-			if unlikelyEvent() then --incredibly unlikely event
+			if #roundCards == 52 then --incredibly unlikely event
 				local coinFlip = random.bernouli(0.5)
 				if coinFlip then --player A wins
 					for _, v in ipairs(roundCards) do
