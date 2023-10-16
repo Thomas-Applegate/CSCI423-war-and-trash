@@ -73,7 +73,7 @@ local function optimalJackLoc(currentArray, currentFaceUp, othArray, othFaceUp)
 	for i, c in pairs(counts) do
 		if c >= max then
 			max = c
-			index = 1
+			index = i
 		end
 	end
 	return index
@@ -209,6 +209,12 @@ function trash.play()
 			currentPlayer = "B"
 		else
 			currentPlayer = "A"
+		end
+		
+		if f_debug then --some extra checks in debug mode
+			if N == 25000 then
+				error("25,000 turns taken. Something is wrong: T="..T.." L="..L)
+			end
 		end
 	until gameWon()
 	
