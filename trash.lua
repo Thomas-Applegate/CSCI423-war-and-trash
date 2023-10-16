@@ -137,11 +137,6 @@ local function playTurn(currentPlayer)
 		--check if the player's array has been cleared
 		local clear = true
 		for i=1,#currentArray do
-			if f_debug then
-				if currentArray[i].value ~= i then
-					error("Player array card value mismatch, something went wrong")
-				end
-			end
 			if currentFaceUp[i] == false then
 				clear = false
 				break
@@ -156,6 +151,12 @@ local function playTurn(currentPlayer)
 			--move cards into temp pile and then shuffle
 			local tempPile = {}
 			for i=1,#currentArray do
+				if f_debug then --make sure array is valid
+					if currentArray[i].value ~= i then
+						error("Player array card value mismatch, expected "
+							..i.." got "..currentArray[i].value)
+					end
+				end
 				tempPile[#tempPile+1] = currentArray[i]
 				currentArray[i] = nil
 			end
