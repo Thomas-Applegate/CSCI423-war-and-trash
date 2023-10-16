@@ -54,6 +54,31 @@ local function gameWon()
 	end
 end
 
+local function optimalJackLoc(currentArray, currentFaceUp, othArray, othFaceUp)
+	local counts = {}
+	for i=1,#currentArray do
+		if not currentFaceUp[i] then
+			local count = 0
+			if othFaceUp[i] then count = 1 end
+			for _, v in ipairs(discardPile) do
+				if v.value == i then
+					count = count + 1
+				end
+			end
+			counts[i] = count
+		end
+	end
+	local index = -1
+	local max = -1
+	for i, c in pairs(counts) do
+		if c >= max then
+			max = c
+			index = 1
+		end
+	end
+	return index
+end
+
 local function playTurn(currentPlayer)
 	local currentArray, currentFaceUp, othArray, othFaceUp = nil
 	
@@ -67,6 +92,47 @@ local function playTurn(currentPlayer)
 		currentFaceUp = playerBFaceUp
 		othArray = playerAArray
 		othFaceUp = playerAFaceUp
+	end
+	
+	local keepPlaying = true
+	local cardInHand = nil
+		--compute weather or not to take from discard or draw
+		if discardPile[#discardPile]:isJack() then --take the jack
+			cardInHand = discardPile[#discardPile]
+			discardPile[#discardPile] = nil
+		elseif discardPile[#discardPile].value <= #currentArray then
+			if currentFaceUp[discardPile[#discardPile].value] then --take from draw
+				cardInHand = drawPile[#drawPile]
+				drawPile[#drawPile] = nil
+			else --take from discard
+				cardInHand = discardPile[#discardPile]
+				discardPile[#discardPile] = nil
+			end
+		else --take from draw
+			cardInHand = drawPile[#drawPile]
+			drawPile[#drawPile] = nil
+		end
+	
+	while keepPlaying do
+		--if the card in hand is a jack compute the optimal jack location
+		if cardInHand:isJack() then
+			local loc = optimalJackLoc(currentArray, currentFaceUp, othArray,
+				othFaceUp)
+			local temp = currentArray[loc]
+			currentArray[loc] = cardInHand
+			currentFaceUp[loc] = true
+			cardInHand = temp
+		elseif cardInHand.value > #currentArray or currentFaceUp[cardInHand.value] then
+			discardPile[#discardPile+1] = cardInHand
+			cardInHand = nil
+			keepPlaying = false
+		else
+			local value = cardInHand.value
+			local temp = currentArray[value]
+			currentArray[value] = cardInHand
+			currentFaceUp[value] = true
+			cardInHand = temp
+		end
 	end
 end
 
