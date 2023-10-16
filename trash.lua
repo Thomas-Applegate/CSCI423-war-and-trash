@@ -96,22 +96,22 @@ local function playTurn(currentPlayer)
 	
 	local keepPlaying = true
 	local cardInHand = nil
-		--compute weather or not to take from discard or draw
-		if discardPile[#discardPile]:isJack() then --take the jack
-			cardInHand = discardPile[#discardPile]
-			discardPile[#discardPile] = nil
-		elseif discardPile[#discardPile].value <= #currentArray then
-			if currentFaceUp[discardPile[#discardPile].value] then --take from draw
-				cardInHand = drawPile[#drawPile]
-				drawPile[#drawPile] = nil
-			else --take from discard
-				cardInHand = discardPile[#discardPile]
-				discardPile[#discardPile] = nil
-			end
-		else --take from draw
+	--compute weather or not to take from discard or draw
+	if discardPile[#discardPile]:isJack() then --take the jack
+		cardInHand = discardPile[#discardPile]
+		discardPile[#discardPile] = nil
+	elseif discardPile[#discardPile].value <= #currentArray then
+		if currentFaceUp[discardPile[#discardPile].value] then --take from draw
 			cardInHand = drawPile[#drawPile]
 			drawPile[#drawPile] = nil
+		else --take from discard
+			cardInHand = discardPile[#discardPile]
+			discardPile[#discardPile] = nil
 		end
+	else --take from draw
+		cardInHand = drawPile[#drawPile]
+		drawPile[#drawPile] = nil
+	end
 	
 	while keepPlaying do
 		--if the card in hand is a jack compute the optimal jack location
