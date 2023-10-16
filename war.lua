@@ -121,12 +121,12 @@ function war.play()
 					for _, v in ipairs(roundCards) do
 						playerAWinnings[#playerAWinnings+1] = v
 					end
-					if f_debug then print "unlikely event: player A wins" end
+					if f_debug then io.stderr:write "unlikely event: player A wins\n" end
 				else --player B wins
 					for _, v in ipairs(roundCards) do
 						playerBWinnings[#playerBWinnings+1] = v
 					end
-					if f_debug then print "unlikely event: player B wins" end
+					if f_debug then io.stderr:write "unlikely event: player B wins\n" end
 				end
 				roundComplete = true
 			else --check for and shuffle empty hands

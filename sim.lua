@@ -11,7 +11,7 @@ if not f_debug then --verify arguments
 		error("invalid number of arguments", 0)
 	end
 else
-	print "\27[1m\27[31mWARNING: debug flag is set. disable before submission!\27[0m"
+	io.stderr:write "\27[1m\27[31mWARNING: debug flag is set. disable before submission!\27[0m\n"
 end
 
 local gameStr = arg[1]
