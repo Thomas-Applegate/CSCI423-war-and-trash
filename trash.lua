@@ -68,7 +68,7 @@ local function optimalJackLoc(currentArray, currentFaceUp, othArray, othFaceUp)
 			counts[i] = count
 		end
 	end
-	local index = -1
+	local index = nil
 	local max = -1
 	for i, c in pairs(counts) do
 		if c >= max then

@@ -110,7 +110,15 @@ local function fillSuit(name)
 	for i=1,13 do
 		local c = {suit=name, value=i}
 		setmetatable(c, cards_mt)
-		cards[#cards+1] = c
+		local proxy = {}
+		local mt = {
+			__index = c,
+			__newindex = function (t,k,v)
+				error("attempt to update a read-only table", 2)
+			end
+		}
+		setmetatable(proxy, mt)
+		cards[#cards+1] = proxy
 	end
 end
 
