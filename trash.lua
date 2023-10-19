@@ -33,13 +33,20 @@ local function setup()
 end
 
 local function checkForTransition()
-	local lastWinning = currentWinningPlayer
+	local newWinningPlayer = nil
+	
 	if #playerAArray < #playerBArray then --player A is winning
-		currentWinningPlayer = "A"
+		newWinningPlayer = "A"
 	elseif #playerBArray < #playerAArray then --player B is winning
-		currentWinningPlayer = "B"
+		newWinningPlayer = "B"
 	end
-	if lastWinning ~= currentWinningPlayer then
+	
+	if newWinningPlayer == nil and currentWinningPlayer ~= nil then --the game is tied
+		return false
+	end
+	
+	if newWinningPlayer ~= currentWinningPlayer then
+		currentWinningPlayer = newWinningPlayer
 		return true
 	else
 		return false
