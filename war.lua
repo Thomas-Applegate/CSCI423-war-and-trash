@@ -43,7 +43,17 @@ local function checkForTransition()
 		newWinningPlayer = "B"
 	end
 	
+	if newWinningPlayer == nil and currentWinningPlayer ~= nil then --the game is tied
+		return false
+	end
+	
 	if currentWinningPlayer ~= newWinningPlayer then
+		--[[if f_debug then
+			local total = ACount + BCount
+			io.stderr:write("Transition: Current Winner:"..(currentWinningPlayer or "nil")
+				.." New Winner:"..(newWinningPlayer or "nil").." ACount:"..ACount..
+				" BCount:"..BCount.." Total:"..total.."\n")
+		end]]--
 		currentWinningPlayer = newWinningPlayer
 		return true
 	else
