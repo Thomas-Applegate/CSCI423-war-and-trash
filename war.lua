@@ -38,7 +38,8 @@ local function checkForTransition()
 	
 	if ACount > BCount then
 		newWinningPlayer = "A"
-	elseif BCount > ACount then
+	end
+	if BCount > ACount then
 		newWinningPlayer = "B"
 	end
 	
@@ -168,12 +169,10 @@ function war.play()
 			L = N
 		end
 		
-		if f_debug then
-			local total = #playerAHand + #playerAWinnings
-			total = total + #playerBHand + #playerBWinnings
-			if total ~= 52 then
-				error("total card count is not 52, something went wrong")
-			end
+		local total = #playerAHand + #playerAWinnings
+		total = total + #playerBHand + #playerBWinnings
+		if total ~= 52 then
+			error("total card count is not 52, something went wrong")
 		end
 		
 	until gameWon()
