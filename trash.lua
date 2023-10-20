@@ -103,22 +103,36 @@ local function playTurn(currentPlayer)
 	
 	local keepPlaying = true
 	local cardInHand = nil
+	local swap = false
 	--compute weather or not to take from discard or draw
 	if discardPile[#discardPile]:isJack() then --take the jack
 		cardInHand = discardPile[#discardPile]
 		discardPile[#discardPile] = nil
-	elseif discardPile[#discardPile].value <= #currentArray then
-		if currentFaceUp[discardPile[#discardPile].value] then --take from draw
-			cardInHand = drawPile[#drawPile]
-			drawPile[#drawPile] = nil
-		else --take from discard
+	elseif discardPile[#discardPile].value <= #currentArray then --discard value is within array range
+		local discardValue = discardPile[#discardPile].value
+		if currentFaceUp[discardValue] then --we have already placed a card for that value
+			if currentArray[discardValue]:isJack() then --we can swap (take from discard)
+				cardInHand = discardPile[#discardPile]
+				discardPile[#discardPile] = nil
+				swap = true
+			else --take from draw
+				cardInHand = drawPile[#drawPile]
+				drawPile[#drawPile] = nil
+			end
+		else --take from discard (this position has not been filled yet)
 			cardInHand = discardPile[#discardPile]
 			discardPile[#discardPile] = nil
 		end
-	else --take from draw
+	else --take from draw (discard value is outside of array range)
 		cardInHand = drawPile[#drawPile]
 		drawPile[#drawPile] = nil
 	end
+	
+	if swap then
+		local tmp = currentArray[cardInHand.value]
+		currentArray[cardInHand.value] = cardInHand
+		cardInHand = tmp
+	end --card in hand is now a jack
 	
 	while keepPlaying do
 		--if the card in hand is a jack compute the optimal jack location
@@ -225,11 +239,7 @@ function trash.play()
 			currentPlayer = "A"
 		end
 		
-		if f_debug then --some extra checks in debug mode
-			if N == 25000 then
-				error("25,000 turns taken. Something is wrong: T="..T.." L="..L)
-			end
-		end
+		
 	until gameWon()
 	
 	print("OUTPUT trash turns "..N.." transitions "..T.." last "..(L/N))
