@@ -132,6 +132,9 @@ local function playTurn(currentPlayer)
 		local tmp = currentArray[cardInHand.value]
 		currentArray[cardInHand.value] = cardInHand
 		cardInHand = tmp
+		if cardInHand:isJack() == false then
+			error("Swapped but the card in hand is not a jack, something went wrong")
+		end
 	end --card in hand is now a jack
 	
 	while keepPlaying do
