@@ -39,6 +39,21 @@ local function checkForTransition()
 		newWinningPlayer = "A"
 	elseif #playerBArray < #playerAArray then --player B is winning
 		newWinningPlayer = "B"
+	else --the arrays are the same size, lets compute the number of cards face up
+		local AFaceUp = 0
+		local BFaceUp = 0
+		for _, v in pairs(playerAFaceUp) do
+			if v then AFaceUp = AFaceUp + 1 end
+		end
+		for _, v in pairs(playerBFaceUp) do
+			if v then BFaceUp = BFaceUp + 1 end
+		end
+		
+		if AFaceUp > BFaceUp then
+			newWinningPlayer = "A"
+		elseif BFaceUp > AFaceUp then
+			newWinningPlayer = "B"
+		end
 	end
 	
 	if newWinningPlayer == nil and currentWinningPlayer ~= nil then --the game is tied
