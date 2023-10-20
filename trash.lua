@@ -146,8 +146,16 @@ local function playTurn(currentPlayer)
 			currentArray[loc] = cardInHand
 			currentFaceUp[loc] = true
 			cardInHand = temp
-		elseif cardInHand.value > #currentArray or currentFaceUp[cardInHand.value] then
+		elseif cardInHand.value > #currentArray then
 			keepPlaying = false
+		elseif currentFaceUp[cardInHand.value] then
+			if currentArray[cardInHand.value]:isJack() then --jack is in the place we can swap
+				local tmp = currentArray[cardInHand.value]
+				currentArray[cardInHand.value] = cardInHand
+				cardInHand = tmp
+			else --can't swap so the turn is over
+				keepPlaying = false
+			end
 		else
 			local value = cardInHand.value
 			local temp = currentArray[value]
