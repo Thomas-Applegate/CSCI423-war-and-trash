@@ -76,6 +76,9 @@ function cards_mt.warValue(c)
 	end
 end
 
+cards_mt.aceHighValue = cards_mt.warValue
+
+--global function
 function newDeck() --shallow copy master deck
 	local deck = {}
 	for i, v in ipairs(cards) do
@@ -84,6 +87,7 @@ function newDeck() --shallow copy master deck
 	return deck
 end
 
+--global function
 --lua arrays start at one, so I have to start c at one and finish at n
 function shuffle(tab)
 	if type(tab) ~= "table" then
